@@ -1,17 +1,16 @@
 package controllers
 
 import (
-	"encoding/json"
 	"net/http"
 	"store/src/models"
 	"store/src/services"
-	"strconv"
 
 	"github.com/gorilla/mux"
 )
 
 // ProductController exposes actions on the products API
 type ProductController struct {
+	Controller
 	productManager services.ProductManager
 	router         mux.Router
 }
@@ -44,14 +43,12 @@ func (controller *ProductController) GetList(writer http.ResponseWriter, request
 		writer.WriteHeader(500)
 	}
 
-	encoder := json.NewEncoder(writer)
-	encoder.Encode(products)
+	controller.WriteJSON(writer, products)
 }
 
 // GetByID gets a product with the specified id
 func (controller *ProductController) GetByID(writer http.ResponseWriter, request *http.Request) {
-	vars := mux.Vars(request)
-	productID, err := strconv.Atoi(vars["productId"])
+	productID, err := controller.GetRequestParamAsInt(request, "productId")
 
 	if err != nil {
 		writer.WriteHeader(400)
@@ -70,15 +67,14 @@ func (controller *ProductController) GetByID(writer http.ResponseWriter, request
 		return
 	}
 
-	encoder := json.NewEncoder(writer)
-	encoder.Encode(product)
+	controller.WriteJSON(writer, product)
 }
 
 // Create saves a new product to the data store
 func (controller *ProductController) Create(writer http.ResponseWriter, request *http.Request) {
-	decoder := json.NewDecoder(request.Body)
 	product := models.Product{}
-	err := decoder.Decode(&product)
+	err := controller.ParseJSONBody(request, &product)
+
 	if err != nil {
 		writer.WriteHeader(400)
 		return
@@ -91,18 +87,21 @@ func (controller *ProductController) Create(writer http.ResponseWriter, request 
 	}
 
 	writer.WriteHeader(201)
-	encoder := json.NewEncoder(writer)
-	encoder.Encode(updatedProduct)
+	controller.WriteJSON(writer, updatedProduct)
 }
 
 // Update updates a current product with the matching id
 func (controller *ProductController) Update(writer http.ResponseWriter, request *http.Request) {
-	vars := mux.Vars(request)
-	productID, err := strconv.Atoi(vars["productId"])
+	productID, err := controller.GetRequestParamAsInt(request, "productId")
 
-	decoder := json.NewDecoder(request.Body)
+	if err != nil {
+		writer.WriteHeader(400)
+		return
+	}
+
 	product := models.Product{}
-	err = decoder.Decode(&product)
+	err = controller.ParseJSONBody(request, &product)
+
 	if err != nil {
 		writer.WriteHeader(400)
 		return
@@ -120,8 +119,7 @@ func (controller *ProductController) Update(writer http.ResponseWriter, request 
 
 // DeleteByID removes the product with the specified id
 func (controller *ProductController) DeleteByID(writer http.ResponseWriter, request *http.Request) {
-	vars := mux.Vars(request)
-	productID, err := strconv.Atoi(vars["productId"])
+	productID, err := controller.GetRequestParamAsInt(request, "productId")
 
 	if err != nil {
 		writer.WriteHeader(400)
@@ -129,6 +127,7 @@ func (controller *ProductController) DeleteByID(writer http.ResponseWriter, requ
 	}
 
 	isDeleted, err := controller.productManager.Delete(productID)
+
 	if err != nil {
 		writer.WriteHeader(500)
 		return
@@ -136,9 +135,7 @@ func (controller *ProductController) DeleteByID(writer http.ResponseWriter, requ
 
 	if isDeleted {
 		writer.WriteHeader(204)
-		return
 	} else {
 		writer.WriteHeader(404)
-		return
 	}
 }
