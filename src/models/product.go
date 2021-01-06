@@ -1,5 +1,7 @@
 package models
 
+var empty Product = Product{}
+
 // Product stores product information
 type Product struct {
 	ID          int     `json:"id"`
@@ -9,11 +11,16 @@ type Product struct {
 }
 
 // NewProduct creates a new instance of a product
-func NewProduct(name, description string, price float32) Product {
-	return Product{
+func NewProduct(name, description string, price float32) *Product {
+	return &Product{
 		ID:          1,
 		Name:        name,
 		Description: description,
 		Price:       price,
 	}
+}
+
+// Empty returns an empty product
+func Empty() *Product {
+	return &empty
 }

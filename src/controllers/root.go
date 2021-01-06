@@ -1,10 +1,10 @@
 package controllers
 
-import "net/http"
+import (
+	"github.com/gorilla/mux"
+)
 
 // RegisterControllers registers all controllers
-func RegisterControllers() {
-	productController := NewProductController()
-
-	http.Handle("/products", productController)
+func RegisterControllers(router *mux.Router) {
+	NewProductController(router)
 }
