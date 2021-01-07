@@ -87,7 +87,10 @@ func (controller *ProductController) Create(writer http.ResponseWriter, request 
 		return
 	}
 
-	// TODO check that updated project was updated
+	if updatedProduct == nil {
+		writer.WriteHeader(404)
+		return
+	}
 
 	writer.WriteHeader(201)
 	controller.WriteJSON(writer, updatedProduct)
@@ -110,7 +113,7 @@ func (controller *ProductController) Update(writer http.ResponseWriter, request 
 		return
 	}
 
-	// TODO how come ID wasn't set when product was set?
+	// TODO how come ID wasn't set when product was set? would prefer if this were an assert
 	product.ID = productID
 
 	if err != nil {

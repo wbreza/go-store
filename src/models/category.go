@@ -17,4 +17,4 @@ func NewCategory(name, description string) *Category {
 	}
 }
 
-// TODO add empty
+// TODO add empty (can't the same way as product while leaving product as is, need to learn more about how empty works)

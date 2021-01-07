@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -23,8 +24,14 @@ func (controller *Controller) WriteJSON(writer http.ResponseWriter, value interf
 // GetRequestParamAsInt Gets the request parametert from the incoming route
 func (controller *Controller) GetRequestParamAsInt(request *http.Request, param string) (int, error) {
 	vars := mux.Vars(request)
-	// TODO safely check for param in vars, if golang doesn't handle next line perfectly
-	return strconv.Atoi(vars[param])
+
+	paramValue, existed := vars[param]
+	
+	if (existed) {
+		return strconv.Atoi(paramValue)
+	} else {
+		return -1, errors.New("stars, can't do it, not today.")
+	}
 }
 
 // ParseJSONBody parses JSON from the request body
