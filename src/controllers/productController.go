@@ -31,6 +31,7 @@ func NewProductController(router *mux.Router) *ProductController {
 	return &controller
 }
 
+// TODO what is happening here?
 func (controller *ProductController) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	controller.GetList(writer, request)
 }
@@ -86,6 +87,8 @@ func (controller *ProductController) Create(writer http.ResponseWriter, request 
 		return
 	}
 
+	// TODO check that updated project was updated
+
 	writer.WriteHeader(201)
 	controller.WriteJSON(writer, updatedProduct)
 }
@@ -107,6 +110,7 @@ func (controller *ProductController) Update(writer http.ResponseWriter, request 
 		return
 	}
 
+	// TODO how come ID wasn't set when product was set?
 	product.ID = productID
 
 	if err != nil {
