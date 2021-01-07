@@ -13,6 +13,7 @@ type Product struct {
 // NewProduct creates a new instance of a product
 func NewProduct(name, description string, price float32) *Product {
 	return &Product{
+		// TODO automatically incremend id
 		ID:          1,
 		Name:        name,
 		Description: description,

@@ -31,6 +31,7 @@ func NewProductController(router *mux.Router) *ProductController {
 	return &controller
 }
 
+// TODO what is happening here?
 func (controller *ProductController) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	controller.GetList(writer, request)
 }
@@ -83,6 +84,11 @@ func (controller *ProductController) Create(writer http.ResponseWriter, request 
 	updatedProduct, err := controller.productManager.Save(&product)
 	if err != nil {
 		writer.WriteHeader(500)
+		return
+	}
+
+	if updatedProduct == nil {
+		writer.WriteHeader(404)
 		return
 	}
 
