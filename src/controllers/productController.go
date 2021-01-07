@@ -113,7 +113,6 @@ func (controller *ProductController) Update(writer http.ResponseWriter, request 
 		return
 	}
 
-	// TODO how come ID wasn't set when product was set? would prefer if this were an assert
 	product.ID = productID
 
 	if err != nil {

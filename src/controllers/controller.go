@@ -15,7 +15,6 @@ type Controller struct {
 
 // WriteJSON writes JSON output to the response
 func (controller *Controller) WriteJSON(writer http.ResponseWriter, value interface{}) {
-	// TODO, if write is a member of request, update this to take request instead
 	encoder := json.NewEncoder(writer)
 	encoder.Encode(value)
 	// TODO why not need to write the writer?
