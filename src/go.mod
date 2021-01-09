@@ -1,4 +1,4 @@
-module store
+module github.com/wbreza/go-store
 
 go 1.15
 

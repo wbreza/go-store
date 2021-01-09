@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"store/src/controllers"
 
 	"github.com/gorilla/mux"
+	"github.com/wbreza/go-store/api/controllers"
 )
 
 func main() {

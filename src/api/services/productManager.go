@@ -1,6 +1,8 @@
 package services
 
-import "store/src/models"
+import (
+	"github.com/wbreza/go-store/api/models"
+)
 
 var cache = make(map[int]*models.Product)
 

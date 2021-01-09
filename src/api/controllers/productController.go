@@ -2,10 +2,10 @@ package controllers
 
 import (
 	"net/http"
-	"store/src/models"
-	"store/src/services"
 
 	"github.com/gorilla/mux"
+	"github.com/wbreza/go-store/api/models"
+	"github.com/wbreza/go-store/api/services"
 )
 
 // ProductController exposes actions on the products API
